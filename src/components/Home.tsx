@@ -1,17 +1,20 @@
 import { useState } from 'react'
+import Task from './Task';
 
-interface ITask {
+export interface ITask {
     id: string;
     description: string;
 }
 
+type TypehandleChange = (e: React.ChangeEvent<HTMLInputElement>) => void
+export type TypehandleClick = (e: React.MouseEvent<HTMLButtonElement>) => void
+
+
 const Home = () => {
 
-    const [task, setTask] = useState<ITask>({ id: "", description: "" });
+    // const [task, setTask] = useState<ITask>({ id: "", description: "" });
+    const [task, setTask] = useState<ITask>({} as ITask);
     const [allTasks, setAllTasks] = useState<ITask[] | []>([]);
-
-
-    type TypehandleChange = (e: React.ChangeEvent<HTMLInputElement>) => void
 
     const handleChange: TypehandleChange = (e) => {
         setTask({
@@ -19,9 +22,6 @@ const Home = () => {
             description: e.target.value,
         });
     }
-
-    type TypehandleClick = (e: React.MouseEvent<HTMLButtonElement>) => void
-
 
     const handleClick: TypehandleClick = (e) => {
         setAllTasks([...allTasks, task]);
@@ -41,17 +41,14 @@ const Home = () => {
     return (
         <div>
             <h2>Enter a task</h2>
-            <input type="text" value={task?.description} onChange={handleChange} />
+            <input type="text" value={task.description} onChange={handleChange} />
             <button onClick={handleClick}>Enter Task</button>
             <br />
             <br />
             <hr />
             {allTasks.map((item: ITask, index: number) => {
                 return <div key={index}>
-                    <p>Task: {item.description}</p>
-                    <p>ID: {item.id}</p>
-                    <button onClick={handleDelete} id={item.id}>Delete Task</button>
-                    <hr />
+                    <Task item={item} handleDelete={handleDelete} />
                 </div>
             })}
         </div>
