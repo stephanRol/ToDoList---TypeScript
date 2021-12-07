@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import ThemeContext from '../context/context';
 import Task from './Task';
 
 export interface ITask {
@@ -9,12 +10,11 @@ export interface ITask {
 type TypehandleChange = (e: React.ChangeEvent<HTMLInputElement>) => void
 export type TypehandleClick = (e: React.MouseEvent<HTMLButtonElement>) => void
 
-
 const Home = () => {
 
-    // const [task, setTask] = useState<ITask>({ id: "", description: "" });
     const [task, setTask] = useState<ITask>({} as ITask);
     const [allTasks, setAllTasks] = useState<ITask[] | []>([]);
+    const theme = useContext(ThemeContext)
 
     const handleChange: TypehandleChange = (e) => {
         setTask({
@@ -39,7 +39,8 @@ const Home = () => {
     }
 
     return (
-        <div>
+        <div style={{ backgroundColor: theme.themeObject.backgroundColor, color: theme.themeObject.fontColor }}>
+            <button onClick={theme?.changeTheme}>Change Theme</button>
             <h2>Enter a task</h2>
             <input type="text" value={task.description} onChange={handleChange} />
             <button onClick={handleClick}>Enter Task</button>
